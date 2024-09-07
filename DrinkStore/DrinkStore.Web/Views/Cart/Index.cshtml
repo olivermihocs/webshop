@@ -1,0 +1,116 @@
+﻿@model CartViewModel
+
+
+<div class="text-center">
+    <h1 class="display-4">Italnagykereskedés</h1>
+</div>
+
+
+@if (Model == null || Model.CartProducts == null || Model.CartProducts.Count() == 0)
+{
+    <div class="text-center">
+        <h1>A Kosár üres</h1>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1>Kosár tartalma</h1>
+    </div>
+    <form asp-controller="Cart" asp-action="ClearCart">
+        <p>
+            <input type="submit" value="Kosár Törlése" />
+        </p>
+    </form>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    Termék leírás
+                </td>
+                <td>
+                    Mennyiség
+                </td>
+                <td>
+                    Nettó ár
+                </td>
+                <td>
+                    Bruttó ár
+                </td>
+                <td>
+                    Kosár műveletek
+                </td>
+            </tr>
+            @foreach (var product in Model.CartProducts)
+            {
+                <tr>
+                    <td>
+                        @product.Item1.Manufacturer , @product.Item1.Description (@product.Item1.TypeNo)
+                    </td>
+                    <td>
+                        @product.Item2 @product.Item4
+                        @if (product.Item2 != product.Item3)
+                        {
+                            <p>(@product.Item3 Darab)</p>
+                        }
+                    </td>
+                    <td>
+                        @(product.Item1.Price*product.Item3)  HUF
+                    </td>
+                    <td>
+                        @((int)(product.Item1.Price * product.Item3 *(1+(double)Model.VAT/100)))  HUF
+                    </td>
+                    <td>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" asp-route-productId="@product.Item1.Id">
+                            <p>
+                                <input type="submit" value="Törlés" />
+                            </p>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <h1>Végleges ár: @((int)(Model.Price*(1+(double)Model.VAT/100))) Ft</h1>
+    </div>
+
+
+    <h1>Megrendelés</h1>
+    <div class="row">
+        <div class="col-md-5">
+            <form asp-controller="Cart" asp-action="Index" method="post" asp-validation-summary="ModelOnly">
+                <div asp-validation-summary="ModelOnly" class="failureNotification"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <button class="btn btn-default" type="submit">Megrendelés</button>
+            </form>
+        </div>
+    </div>
+    @ViewBag.ErrorMessage
+
+}
+@section Scripts
+{
+    @* jQuery Validation használata a kliens oldali validációra *@
+    <partial name="_ValidationScriptsPartial" />
+}

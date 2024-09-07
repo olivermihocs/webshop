@@ -1,0 +1,53 @@
+﻿@model ProductViewModel
+
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                @Model.Product.Manufacturer
+            </td>
+            <td>
+                Nettó Ár: @Model.Product.Price HUF
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.Product.Description (@Model.Product.TypeNo)
+            </td>
+            <td>
+                Bruttó Ár: @((int)(Model.Product.Price * (1 + (double)Model.VAT / 100)))  HUF
+            </td>
+        </tr>
+        <tr>
+            @if (@Model.Product.Stock == 0)
+            {
+                <td>
+                    Jelenleg nincs készleten!
+                </td>
+            }
+            else
+            {
+                @Html.ValidationSummary(true)
+                @ViewBag.ConfirmationMessage
+                <td>
+                    Készlet: @Model.Product.Stock
+                </td>
+                @using (Html.BeginForm("Index", "Product", FormMethod.Post, new { Id = Model.Product.Id }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <td>
+                        @Html.EditorFor(m => m.Quantity)
+                        @Html.DropDownListFor(model => model.SelectedPackaging, Model.PackageList)
+                    </td>
+                    <td>
+                        <input type="submit" value="Kosárba" />
+                    </td>
+
+                }
+            }
+
+        </tr>
+    </tbody>
+</table>
+

@@ -1,0 +1,25 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Italnagykereskedés";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Italnagykereskedés</h1>
+</div>
+<table class="table">
+    <tbody>
+        @foreach (var main in Model.Categories)
+        {
+        <tr><td><h1>@main.ElementAt(0).MainCategory.Name</h1><td></tr>
+            @foreach (var category in main)
+            {
+                <tr>
+                    <td>
+                        <a href='@Url.Action("Index","Category", new { id = category.Id})'> @Html.DisplayFor(modelItem => category.Name)</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "eadf0599-172b-4d41-858b-de0f204ca1b9": {
+      "ProjectGuid": "eadf0599-172b-4d41-858b-de0f204ca1b9",
+      "DisplayName": "DrinkStore.Persistence",
+      "ColorIndex": 0
+    },
+    "590a7908-70ff-41b4-8c49-7a4005324916": {
+      "ProjectGuid": "590a7908-70ff-41b4-8c49-7a4005324916",
+      "DisplayName": "DrinkStore.Web",
+      "ColorIndex": 1
+    },
+    "453648f4-520d-4e47-81b5-7e0a4a885463": {
+      "ProjectGuid": "453648f4-520d-4e47-81b5-7e0a4a885463",
+      "DisplayName": "DrinkStore.WebApi",
+      "ColorIndex": 2
+    },
+    "3c4fbce3-4249-4a45-80b7-47e591003fe5": {
+      "ProjectGuid": "3c4fbce3-4249-4a45-80b7-47e591003fe5",
+      "DisplayName": "DrinkStore.Desktop",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

@@ -1,0 +1,57 @@
+﻿@model CartViewModel
+
+
+
+<h1>
+    Köszönjük a megrendelést , @Model.Name
+</h1>
+<h1>
+    A rendelésről emailben értesítjük.
+</h1>
+
+<div class="text-center">
+    <h1>Kosár tartalma</h1>
+</div>
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                Termék leírás
+            </td>
+            <td>
+                Mennyiség
+            </td>
+            <td>
+                Nettó ár
+            </td>
+            <td>
+                Bruttó ár
+            </td>
+        </tr>
+        @foreach (var product in Model.CartProducts)
+        {
+            <tr>
+                <td>
+                    @product.Item1.Manufacturer , @product.Item1.Description (@product.Item1.Id)
+                </td>
+                <td>
+                    @product.Item2 @product.Item4
+                    @if (product.Item2 != product.Item3)
+                    {
+                        <p>(@product.Item3 Darab)</p>
+                    }
+                </td>
+                <td>
+                    @(product.Item1.Price*product.Item3)  HUF
+                </td>
+                <td>
+                    @((int)(product.Item1.Price * product.Item3 *(1+(double)Model.VAT/100)))  HUF
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="text-center">
+    <h1>Végleges ár: @((int)(Model.Price*(1+(double)Model.VAT/100))) Ft</h1>
+</div>
+

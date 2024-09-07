@@ -1,0 +1,80 @@
+﻿@model CategoryViewModel
+
+
+<div class="text-center">
+    <h1>@Model.CategoryName</h1>
+    @(Model.CurrentPage). oldal
+</div>
+
+@if (Model.PrevPageAvailable)
+{
+    <a href="@Url.Action("Index","Category",new { page = @Model.CurrentPage-1, orderByPrice = Model.OrderByPrice, orderByManufacturer = Model.OrderByManufacturer, reverse = Model.Reverse})">Előző oldal</a>
+}
+@if (Model.NextPageAvailable)
+{
+    <a href="@Url.Action("Index","Category",new { page = @Model.CurrentPage+1, orderByPrice = Model.OrderByPrice, orderByManufacturer = Model.OrderByManufacturer, reverse = Model.Reverse })">Következő oldal</a>
+}
+
+<table class="table">
+    <tbody>
+        <tr>
+            <td>
+                Találatok rendezése
+            </td>
+            <td>
+                Gyártó szerint: <a href="@Url.Action("Index", "Category", new { orderByManufacturer = true, reverse = true })">csökkenő/</a><a href="@Url.Action("Index", "Category", new { orderByManufacturer = true })"> növekvő </a>
+            </td>
+
+            <td>
+                Ár szerint: <a href="@Url.Action("Index", "Category", new { orderByPrice = true, reverse = true })">csökkenő/</a><a href="@Url.Action("Index", "Category", new { orderByPrice = true })"> növekvő </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Gyártó
+            </td>
+            <td>
+                Leírás
+            </td>
+            <td>
+                Típusszám
+            </td>
+            <td>
+                Készleten
+            </td>
+            <td>
+                Nettó Ár
+            </td>
+            <td>
+                Bruttó Ár
+            </td>
+        </tr>
+        @foreach (var product in Model.Products)
+        {
+    <tr>
+        <td>
+            @product.Manufacturer
+        </td>
+        <td>
+            <a href='@Url.Action("Index","Product", new { id = product.Id})'>
+                @product.Description
+            </a>
+        </td>
+        <td>
+            <a href='@Url.Action("Index","Product", new { id = product.Id})'>
+                @product.TypeNo
+            </a>
+        </td>
+        <td>
+            @(product.Stock) darab
+        </td>
+        <td>
+            @(product.Price)  HUF
+        </td>
+        <td>
+            @((int)(product.Price *(1+(double)Model.VAT/100)))  HUF
+        </td>
+    </tr>
+        }
+    </tbody>
+</table>

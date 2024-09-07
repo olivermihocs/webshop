@@ -1,0 +1,85 @@
+﻿<Window x:Class="DrinkStore.Desktop.View.NewProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DrinkStore.Desktop.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:viewModel="clr-namespace:DrinkStore.Desktop.ViewModel"
+        xmlns:converters="clr-namespace:DrinkStore.Desktop.View.Converters"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Height="400" Width="300" ResizeMode="NoResize" SizeToContent="Height">
+    <Window.Resources>
+        <x:Array Type="system:String" x:Key="packagingNameArray">
+            <system:String>Darab</system:String>
+            <system:String>Zsugorfólia</system:String>
+            <system:String>Tálca</system:String>
+            <system:String>Rekesz</system:String>
+        </x:Array>
+        <converters:PackagingConverter x:Key="packagingConverter"/>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},
+                        Path=(Validation.Errors)/ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="Típusszám:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5"
+                 Text="{Binding ProductDto.TypeNo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <Label Grid.Row="1" Grid.Column="0" Content="Gyártó:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="5"
+                 Text="{Binding ProductDto.Manufacturer, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <Label Grid.Row="2" Grid.Column="0" Content="Leírás:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5"
+                 Text="{Binding ProductDto.Description, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        
+        <Label Grid.Row="3" Grid.Column="0" Content="Ár (nettó):" VerticalAlignment="Center" />
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="5"
+                 Text="{Binding ProductDto.Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <Label Grid.Row="4" Grid.Column="0" Content="Készlet:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="4" Grid.Column="1" Margin="5"
+                 Text="{Binding ProductDto.Stock, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Vertical">
+            <TextBlock Text="Elérhető kiszerelések:" Margin="5,5,5,0" />
+            <ListBox ItemsSource="{Binding ProductDto.Packagings}" Margin="5">
+                <!-- a kiszerelések listája -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!-- amelynek minden eleme egy kijelölőmező -->
+                        <CheckBox IsChecked="{Binding IsAvailable}" Content="{Binding Id, Converter={StaticResource packagingConverter}, ConverterParameter={StaticResource packagingNameArray}}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+        <Button Grid.Row="6" Grid.Column="0" Content="Mégse"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Width="73"  Height="21"  Margin="5"
+                IsCancel="True"
+                Command="{Binding CancelProductCommand}"/>
+
+        <Button Grid.Row="6" Grid.Column="1" Content="Mentés"
+                HorizontalAlignment="Right" VerticalAlignment="Center"
+                Width="73"  Height="21"  Margin="5"
+                IsDefault="True"
+                Command="{Binding SaveNewProductCommand}"/>
+    </Grid>
+</Window>
